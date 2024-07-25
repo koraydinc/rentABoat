@@ -2,8 +2,10 @@ package dncTech.rentABoat.business.abstracts;
 
 import java.util.List;
 
-import dncTech.rentABoat.entities.concretes.Brand;
+import dncTech.rentABoat.business.requests.CreateBrandRequest;
+import dncTech.rentABoat.business.responses.GetAllBrandsResponse;
 
 public interface BrandService {
-	List<Brand> getAll();
+	List<GetAllBrandsResponse> getAll();
+	void add(CreateBrandRequest createBrandRequest);
 }

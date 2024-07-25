@@ -1,16 +1,14 @@
 package dncTech.rentABoat.dataAccess.concretes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-
-import dncTech.rentABoat.dataAccess.abstracts.BrandRepository;
 import dncTech.rentABoat.entities.concretes.Brand;
 
 @Repository
-public class InMemoryBrandRepository implements BrandRepository {
+public class InMemoryBrandRepository  {
 
 	List<Brand> brands;	
 	
@@ -22,7 +20,6 @@ public class InMemoryBrandRepository implements BrandRepository {
 		brands.add(new Brand(4, "Princess"));
 	}
 
-	@Override
 	public List<Brand> getAll() {
 		return brands;
 	}

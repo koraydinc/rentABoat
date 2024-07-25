@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dncTech.rentABoat.business.abstracts.BrandService;
-import dncTech.rentABoat.entities.concretes.Brand;
+import dncTech.rentABoat.business.requests.CreateBrandRequest;
+import dncTech.rentABoat.business.responses.GetAllBrandsResponse;
 
 @RestController //annotation
 @RequestMapping("/api/brands")
@@ -21,7 +23,12 @@ public class BrandsController {
 	}
 	
 	@GetMapping("/getall")
-	public List<Brand> getAll(){
+	public List<GetAllBrandsResponse> getAll(){
 		return brandService.getAll();
+	};
+	
+	@PostMapping("/add")
+	public void add(CreateBrandRequest createBrandRequest) {
+		brandService.add(createBrandRequest);
 	};
 }
