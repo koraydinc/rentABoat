@@ -1,4 +1,4 @@
-package dncTech.rentABoat.business.responses;
+package dncTech.rentABoat.business.dto.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetAllBrandsResponse {
-	private int id;
+public class DeleteBrandRequest {
 	private String name;
 }

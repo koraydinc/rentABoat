@@ -1,4 +1,4 @@
-package dncTech.rentABoat.business.requests;
+package dncTech.rentABoat.business.dto.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
