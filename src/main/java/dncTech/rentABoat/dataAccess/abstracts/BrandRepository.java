@@ -9,5 +9,5 @@ import dncTech.rentABoat.entities.concretes.Brand;
 
 public interface BrandRepository extends JpaRepository<Brand,Integer> {
 	Optional<Brand> findByName(String name);
-	List<Brand> findByNameContaining(String name);
+	Optional<List<Brand>> findByNameContaining(String name);
 }

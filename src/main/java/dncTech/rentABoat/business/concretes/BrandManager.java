@@ -1,9 +1,7 @@
 package dncTech.rentABoat.business.concretes;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +10,7 @@ import dncTech.rentABoat.business.dto.requests.CreateBrandRequest;
 import dncTech.rentABoat.business.dto.requests.DeleteBrandRequest;
 import dncTech.rentABoat.business.dto.requests.UpdateBrandRequest;
 import dncTech.rentABoat.business.dto.responses.GetAllBrandsResponse;
+import dncTech.rentABoat.business.core.utilities.mappers.BrandMapper;
 import dncTech.rentABoat.dataAccess.abstracts.BrandRepository;
 import dncTech.rentABoat.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
@@ -21,64 +20,41 @@ import lombok.AllArgsConstructor;
 public class BrandManager implements BrandService {
 
 	private final BrandRepository brandRepository;
+	private final BrandMapper brandMapper;
 
 	@Override
 	public List<GetAllBrandsResponse> getAll() {
-		// BusinessRules
 		List<Brand> brands = brandRepository.findAll();
-
-		List<GetAllBrandsResponse> brandsResponse = new ArrayList<GetAllBrandsResponse>();
-
-		for (Brand brand : brands) {
-			GetAllBrandsResponse brandRes = new GetAllBrandsResponse();
-			brandRes.setId(brand.getId());
-			brandRes.setName(brand.getName());
-			brandsResponse.add(brandRes);
-		}
-
-		return brandsResponse;
-
+		return brandMapper.brandsToGetAllBrandsListResponses(brands);
 	}
 
 	@Override
 	public void add(CreateBrandRequest createBrandRequest) {
 		Optional<Brand> optionalBrand = brandRepository.findByName(createBrandRequest.getName());
 		if (!optionalBrand.isPresent()) {
-			Brand brand = new Brand();
-	        brand.setName(createBrandRequest.getName());
-	        brandRepository.save(brand);
+			brandRepository.save(brandMapper.createBrand(createBrandRequest));
 		}
 	}
 
 	@Override
 	public List<GetAllBrandsResponse> getByName(String name) {
-		List<Brand> brands = brandRepository.findByNameContaining(name);
-		return brands.stream().map(brand -> {
-			GetAllBrandsResponse response = new GetAllBrandsResponse();
-			response.setId(brand.getId());
-			response.setName(brand.getName());
-			return response;
-		}).collect(Collectors.toList());
+		Optional<List<Brand>> optionalBrand = brandRepository.findByNameContaining(name);
+		if (optionalBrand.isPresent()) {
+			List<Brand> brands = optionalBrand.get();
+			return brandMapper.brandsToGetAllBrandsListResponses(brands);
+		}
+
+		return null;
 	}
 
 	@Override
 	public void delete(DeleteBrandRequest deleteBrandRequest) {
-		Optional<Brand> optionalBrand = brandRepository.findByName(deleteBrandRequest.getName());
-		if (optionalBrand.isPresent()) {
-			Brand brand = optionalBrand.get();
-			brandRepository.delete(brand);
-		}
+			brandRepository.delete(brandMapper.deleteBrand(deleteBrandRequest));	
 	}
 
 	@Override
-	public void update(UpdateBrandRequest updateBrandRequest) {
-		Optional<Brand> optionalBrand = brandRepository.findByName(updateBrandRequest.getName());
-		if (optionalBrand.isPresent()) {
-			Brand brand = optionalBrand.get();
-			brand.setName(updateBrandRequest.getNewName());
-			brandRepository.save(brand);
-		}
-
+	public void update(UpdateBrandRequest updateBrandRequest) {	
+		brandRepository.save(brandMapper.updateBrand(updateBrandRequest));
 	}
 
 }

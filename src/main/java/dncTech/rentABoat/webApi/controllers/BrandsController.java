@@ -2,10 +2,13 @@ package dncTech.rentABoat.webApi.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import dncTech.rentABoat.business.abstracts.BrandService;
@@ -13,16 +16,13 @@ import dncTech.rentABoat.business.dto.requests.CreateBrandRequest;
 import dncTech.rentABoat.business.dto.requests.DeleteBrandRequest;
 import dncTech.rentABoat.business.dto.requests.UpdateBrandRequest;
 import dncTech.rentABoat.business.dto.responses.GetAllBrandsResponse;
+import lombok.AllArgsConstructor;
 
 @RestController //annotation
 @RequestMapping("/api/brands")
+@AllArgsConstructor
 public class BrandsController {
 	private BrandService brandService;
-	
-	@Autowired
-	public BrandsController(BrandService brandService) {
-		this.brandService = brandService;
-	};
 	
 	@GetMapping("/getall")
 	public List<GetAllBrandsResponse> getAll(){
@@ -30,6 +30,7 @@ public class BrandsController {
 	};
 	
 	@PostMapping("/add")
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public void add(CreateBrandRequest createBrandRequest) {
 		brandService.add(createBrandRequest);
 	};
@@ -39,12 +40,14 @@ public class BrandsController {
 		return brandService.getByName(name);
 	};
 	
-	@PostMapping("/update")
+	@PutMapping("/update")
+	@ResponseStatus(code = HttpStatus.OK)
 	public void update(UpdateBrandRequest updateBrandRequest) {
 		brandService.update(updateBrandRequest);
 	};
 	
-	@PostMapping("/delete")
+	@DeleteMapping("/delete")
+	@ResponseStatus(code = HttpStatus.OK)
 	public void delete(DeleteBrandRequest deleteBrandRequest) {
 		brandService.delete(deleteBrandRequest);
 	};
